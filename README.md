@@ -51,4 +51,4 @@ The easiest way how to visualise the learning is to use coordinates in a plane a
 of neurons will be adjusted to those inputs, and the network should fit the input space as the weight vector will be
 pulled towards the input vectors.
 
-![](doc/som_20x20_1.png =250x250)
+<img src="doc/som_20x20_1.png" width="400">
