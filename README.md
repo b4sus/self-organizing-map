@@ -61,8 +61,8 @@ Example with uniformly generated inputs:
 <img src="doc/som_20x20_5.png" width="400">
 
 Example with inputs generated being contrcentrated to two areas:
-<img src="doc/clouds0.png" width="400">
-<img src="doc/clouds1.png" width="400">
-<img src="doc/clouds2.png" width="400">
-<img src="doc/clouds3.png" width="400">
-<img src="doc/clouds4.png" width="400">
+<img src="doc/cloud0.png" width="400">
+<img src="doc/cloud1.png" width="400">
+<img src="doc/cloud2.png" width="400">
+<img src="doc/cloud3.png" width="400">
+<img src="doc/cloud4.png" width="400">
