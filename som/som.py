@@ -138,7 +138,7 @@ class SOM:
         return max(self.init_sigma * np.exp(-self.iteration / self.sigma_constant), 1)
 
 
-class TrainedKohonenMap:
+class TrainedSOM:
     def __init__(self, Thetas):
         self.Thetas = Thetas
         self.map_length = Thetas.shape[0]
