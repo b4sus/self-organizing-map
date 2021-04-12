@@ -51,4 +51,20 @@ The easiest way how to visualise the learning is to use coordinates in a plane a
 of neurons will be adjusted to those inputs, and the network should fit the input space as the weight vector will be
 pulled towards the input vectors.
 
+In the following images, the blue points are the inputs - two dimensional vectors. Therefore also weight vectors of neurons are two dimensional - the organe points. The black lines represent connection among neurons in the map - each neuron is connected to its neighbors. The expectation is that during learing the map will strech to cover the input space.
+
+Example with uniformly generated inputs:
+
 <img src="doc/som_20x20_1.png" width="400">
+<img src="doc/som_20x20_2.png" width="400">
+<img src="doc/som_20x20_3.png" width="400">
+<img src="doc/som_20x20_4.png" width="400">
+<img src="doc/som_20x20_5.png" width="400">
+
+Example with inputs generated being contrcentrated to two areas:
+
+<img src="doc/cloud0.png" width="400">
+<img src="doc/cloud1.png" width="400">
+<img src="doc/cloud2.png" width="400">
+<img src="doc/cloud3.png" width="400">
+<img src="doc/cloud4.png" width="400">
