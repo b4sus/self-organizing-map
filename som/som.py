@@ -1,21 +1,26 @@
-import time
-
 import numpy as np
+from sklearn.base import TransformerMixin
 
 
-class SOM:
+class SOM(TransformerMixin):
+    """
+    Implementation of self-organizing map (SOM).
+    The class follows the protocol of transformer from scikit-learn, having fit and transform method so it can be used
+    in pipeline.
+    """
 
     def __init__(self, map_length, init_learning_rate=1, learning_rate_constant=3000, init_sigma=1.2,
                  sigma_constant=4000, max_iter=None, observer=None):
         """
-
+        Initializes new SOM.
         :param map_length: how many neurons in each column/row
-        :param init_learning_rate: specifies how much will the neighboring neurons affected
+        :param init_learning_rate: specifies how much will the neighboring neurons affected, 1 is fine, it shouldn't
+        be more
         :param learning_rate_constant: specifies how fast will learning rate decrease
         :param init_sigma: specifies how big will the initial neighborhood will be - 1/4 of map_length seems ok
         :param sigma_constant: specifies how fast will learning rate decrease
-        :param max_iter:maximum number of iterations
-        :param observer: callable invoked after every iteration
+        :param max_iter:maximum number of iterations. Should be in many thousands, up to hundreds of thousands
+        :param observer: callable invoked after every iteration with current SOM state
         """
         self.map_length = map_length
         self.rng = np.random.default_rng()
@@ -27,6 +32,13 @@ class SOM:
         self.observer = observer
 
     def fit(self, X, *args, **kwargs):
+        """
+        Train the SOM
+        :param X:
+        :param args:
+        :param kwargs:
+        :return:
+        """
         nr_features = X.shape[1]
         self.Thetas = self.rng.uniform(size=(self.map_length, self.map_length, nr_features))
         self.iteration = 0
@@ -57,7 +69,15 @@ class SOM:
         return self
 
     def transform(self, X, *args, **kwargs):
-        return X
+        """
+        Returns an array of tuples (length 2) where each row of X is transformed to SOM coordinates where it fits -
+        to its bmu coordinates.
+        """
+        X_transformed = np.empty(shape=len(X), dtype=object)
+        for i, x in enumerate(X):
+            X_transformed[i] = np.unravel_index(np.argmin(np.linalg.norm(self.Thetas - x, axis=2)), (self.map_length,
+                                                                                                     self.map_length))
+        return X_transformed
 
     def find_deltas_using_np(self, x, bmu_coords, learning_rate, sigma, nr_features):
         """
@@ -76,7 +96,8 @@ class SOM:
         Deltas = np.empty((self.map_length, self.map_length, nr_features))
         for neuron_x in range(self.map_length):
             for neuron_y in range(self.map_length):
-                Deltas[neuron_x, neuron_y] = learning_rate * N[neuron_x, neuron_y] * (x - self.Thetas[neuron_x, neuron_y])
+                Deltas[neuron_x, neuron_y] = learning_rate * N[neuron_x, neuron_y] * (
+                            x - self.Thetas[neuron_x, neuron_y])
         return Deltas, N
 
     def find_deltas_using_loops(self, x, bmu_coords, learning_rate, sigma, nr_features):
@@ -138,21 +159,15 @@ class SOM:
         return max(self.init_sigma * np.exp(-self.iteration / self.sigma_constant), 1)
 
 
-class TrainedSOM:
+class TrainedSOM(SOM):
+    """
+    This class exists due to fitting being a slow process - once you fit the SOM, you can save its Thetas attribute and
+    later create an instance of TrainedSOM with it
+    """
     def __init__(self, Thetas):
         self.Thetas = Thetas
         self.map_length = Thetas.shape[0]
-        self.nr_of_features = Thetas.shape[2]
 
     def fit(self, *args):
+        # already fitted, nothing to do
         return self
-
-    def transform(self, X):
-        X_transformed = np.empty(shape=len(X), dtype=object)
-        for i, x in enumerate(X):
-            X_transformed[i] = np.unravel_index(np.argmin(np.linalg.norm(self.Thetas - x, axis=2)), (self.map_length,
-                                                                                                     self.map_length))
-        return X_transformed
-
-    def predict(self, X):
-        pass

@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+from sklearn.datasets import make_moons, make_circles
 
 from som.som import SOM
 
@@ -64,7 +65,7 @@ def square_20():
     km.fit(X)
 
 
-def square_regions():
+def blobs():
     km = SOM(20, init_learning_rate=1, learning_rate_constant=10000, init_sigma=4, sigma_constant=5000, observer=draw2)
     rng = np.random.default_rng()
     x1 = rng.normal(loc=.35, scale=0.1, size=(800, 1))
@@ -76,6 +77,20 @@ def square_regions():
     km.fit(np.hstack((x, y)))
 
 
+def moons():
+    km = SOM(20, init_learning_rate=1, learning_rate_constant=10000, init_sigma=4, sigma_constant=5000, observer=draw2)
+    X = make_moons((100, 200), noise=0.05)
+
+    km.fit(X[0])
+
+
+def circles():
+    km = SOM(20, init_learning_rate=1, learning_rate_constant=10000, init_sigma=4, sigma_constant=5000, observer=draw2)
+    X = make_circles((400, 200), noise=0.05, factor=0.4)
+
+    km.fit(X[0])
+
+
 if __name__ == "__main__":
     plt.figure(figsize=(10, 10))
-    square_20()
+    circles()
