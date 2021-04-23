@@ -77,5 +77,6 @@ And some other shapes:
 # TODOs
 1. Make the som show how will the learning_rate and sigma change with current config prior to fitting to make
    configuration easier
+1. Try some cooler datasets, maybe start with iris
 1. Stop learning when weights are not adjusted anymore (or just very little)
 1. Utility functions to save/load trained SOM
